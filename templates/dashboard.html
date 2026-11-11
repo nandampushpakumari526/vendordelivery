@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container mt-4">
+
+<h2>Vendor Performance Dashboard</h2>
+<hr>
+
+<div class="row">
+
+<div class="col-md-4">
+<div class="card bg-primary text-white p-3">
+<h5>Total Records</h5>
+<h3>{{ total }}</h3>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card bg-success text-white p-3">
+<h5>On-Time Deliveries</h5>
+<h3>{{ on_time }}</h3>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card bg-danger text-white p-3">
+<h5>Delayed Deliveries</h5>
+<h3>{{ delayed }}</h3>
+</div>
+</div>
+
+</div>
+
+{% if accuracy %}
+<div class="alert alert-info mt-3">
+<strong>Model Accuracy:</strong> {{ accuracy }} %
+</div>
+{% else %}
+<div class="alert alert-warning mt-3">
+Model not trained yet.
+</div>
+{% endif %}
+
+{% if total > 0 %}
+<h4 class="mt-4">Delivery Distribution</h4>
+<img src="{{ url_for('static', filename='charts/performance.png') }}" width="400">
+{% endif %}
+
+{% if accuracy %}
+<hr>
+<h4>Confusion Matrix</h4>
+<img src="{{ url_for('static', filename='charts/confusion_matrix.png') }}" width="400">
+
+<hr>
+<h4>Feature Importance</h4>
+<img src="{{ url_for('static', filename='charts/importance.png') }}" width="500">
+{% endif %}
+<hr>
+<h4>ROC Curve</h4>
+<img src="{{ url_for('static', filename='charts/roc.png', v=accuracy) }}" width="500">
+<hr>
+
+<a href="/add" class="btn btn-primary">Add Vendor Data</a>
+<a href="/predict" class="btn btn-success">Predict</a>
+<a href="/retrain" class="btn btn-warning">Retrain Model</a>
+<a href="/generate" class="btn btn-dark">Generate Sample Data</a>
+<a href="/clear" class="btn btn-outline-danger">Clear All Data</a>
+<a href="/logout" class="btn btn-danger">Logout</a>
+
+</div>
+
+</body>
+</html>
